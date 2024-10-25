@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\WeekController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\TrackController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TrackController;
+use App\Http\Controllers\WeekController;
 use App\Http\Middleware\EnsureValidCodeMiddleware;
+use Illuminate\Support\Facades\Route;
 
 // Auth
 Route::get('/login', [LoginController::class, 'login'])->middleware('guest')->name('login');
@@ -38,5 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
 
-    Route::fallback(fn () => abort(404));
+    // Catégories
+    Route::get('/categories', [CategoryController::class, 'index'])->name('app.categories.index');
+    Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('app.categories.show');
+
+    Route::fallback(fn() => abort(404));
 });
