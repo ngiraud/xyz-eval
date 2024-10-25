@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Track extends Model
@@ -49,13 +49,18 @@ class Track extends Model
         return $this->belongsTo(Week::class);
     }
 
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     /**
      * Get current week tracks.
      */
     public function scopeCurrentWeek(Builder $query): Builder
     {
         return $query->whereRelation('week', 'year', date('Y'))
-            ->whereRelation('week', 'week_number', date('W'));
+                     ->whereRelation('week', 'week_number', date('W'));
     }
 
     /**
@@ -64,7 +69,7 @@ class Track extends Model
     public function scopeRanking(Builder $query): Builder
     {
         return $query->withCount('likes')
-            ->orderBy('likes_count', 'desc')
-            ->orderBy('created_at', 'asc');
+                     ->orderBy('likes_count', 'desc')
+                     ->orderBy('created_at', 'asc');
     }
 }
