@@ -3,7 +3,7 @@
 
         <section>
             <h1>
-                {{ $category->name }} <small>{{ trans_choice('tracks.count', $category->tracks_count) }}</small>
+                {{ $category->name }} <small>{{ trans_choice('tracks.count', $tracks->total()) }}</small>
             </h1>
 
             @if ($tracks->isEmpty())
@@ -15,7 +15,7 @@
                     @foreach($tracks as $track)
                         <li>
                             <a href="{{ route('app.tracks.show', ['week' => $track->week->uri, 'track' => $track]) }}">
-                                <span class="position">{{ $loop->iteration }}.</span>
+                                <span class="position">{{ $tracks->firstItem() + $loop->index }}.</span>
                                 <img src="{{ $track->player_thumbnail_url }}" alt="">
                                 <div class="details">
                                     <h1 class="truncate">{{ $track->artist }}</h1>
